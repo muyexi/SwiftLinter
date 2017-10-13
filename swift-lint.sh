@@ -27,7 +27,8 @@ if [[ -e "${SWIFT_LINT}" ]]; then
     if [ "$count" -ne 0 ]; then
         echo "Found lintable files! Linting and fixing the fixible parts..."
 
-       $SWIFT_LINT autocorrect --use-script-input-files #autocorrects before commit.
+        $SWIFT_LINT autocorrect --use-script-input-files #autocorrects before commit.
+        $SWIFT_LINT lint --use-script-input-files #lint before commit.
     else
         echo "No files to lint!"
         exit 0
@@ -46,6 +47,6 @@ if [[ -e "${SWIFT_LINT}" ]]; then
 else
 #### If SwiftLint is not installed, do not allow commit
     echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
-    echo "If you have Homebrew, you can directly use `brew install swiftlint` to install SwiftLint"
+    echo "If you have Homebrew, you can directly use 'brew install swiftlint' to install SwiftLint"
     exit 1
 fi
