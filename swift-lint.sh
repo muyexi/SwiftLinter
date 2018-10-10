@@ -30,7 +30,10 @@ if [[ -e "${SWIFT_LINT}" ]]; then
         DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
         CONFIG_PATH="$DIR/swiftlint.yml"
 
-        $SWIFT_LINT lint --use-script-input-files --config $CONFIG_PATH #lint before commit.
+        if [ $1 == "autocorrect" ]; then
+            $SWIFT_LINT autocorrect --use-script-input-files --config $CONFIG_PATH  #autocorrects before commit.
+        fi
+        
         $SWIFT_LINT lint --use-script-input-files --config $CONFIG_PATH #lint before commit.
     else
         echo "No files to lint!"
