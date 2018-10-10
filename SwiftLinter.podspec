@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name           = 'SwiftLinter'
-  s.version        = '0.1'
+  s.version        = '0.2'
   s.platform       = :ios, '8.0'
   s.summary        = 'Lint changed files with SwiftLint.'
   s.license        = 'MIT'
