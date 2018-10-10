@@ -27,8 +27,11 @@ if [[ -e "${SWIFT_LINT}" ]]; then
     if [ "$count" -ne 0 ]; then
         echo "Found lintable files! Linting and fixing the fixible parts..."
 
-        $SWIFT_LINT autocorrect --use-script-input-files #autocorrects before commit.
-        $SWIFT_LINT lint --use-script-input-files #lint before commit.
+        DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+        CONFIG_PATH="$DIR/swiftlint.yml"
+
+        $SWIFT_LINT lint --use-script-input-files --config $CONFIG_PATH #lint before commit.
+        $SWIFT_LINT lint --use-script-input-files --config $CONFIG_PATH #lint before commit.
     else
         echo "No files to lint!"
         exit 0
