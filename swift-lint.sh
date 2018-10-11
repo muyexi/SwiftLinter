@@ -7,13 +7,13 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 #if $SWIFT_LINT >/dev/null 2>&1; then
 if [[ -e "${SWIFT_LINT}" ]]; then
     count=0
-    for file_path in $(git ls-files -m --exclude-from=.gitignore | grep ".swift$"); do
+    for file_path in $(git ls-files -m --full-name --exclude-from=.gitignore | grep ".swift$"); do
         export SCRIPT_INPUT_FILE_$count="$GIT_ROOT/$file_path"
         count=$((count + 1))
     done
 
 ##### Check for modified files in unstaged/Staged area #####
-    for file_path in $(git diff --name-only --cached | grep ".swift$"); do
+    for file_path in $(git diff --name-only --cached --full-name | grep ".swift$"); do
         export SCRIPT_INPUT_FILE_$count="$GIT_ROOT/$file_path"
         count=$((count + 1))
     done
