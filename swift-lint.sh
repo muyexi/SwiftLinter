@@ -30,11 +30,11 @@ if [[ -e "${SWIFT_LINT}" ]]; then
 ##### Make the count avilable as global variable #####
     export SCRIPT_INPUT_FILE_COUNT=$count
 
-    echo "${SCRIPT_INPUT_FILE_COUNT}"
+    echo "Found lintable files: ${SCRIPT_INPUT_FILE_COUNT}"
 
 ##### Lint files or exit if no files found for lintint #####
     if [ "$count" -ne 0 ]; then
-        echo "Found lintable files! Linting and fixing the fixible parts..."
+        echo "Linting and fixing the fixible parts..."
 
         DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
         CONFIG_PATH="$DIR/swiftlint.yml"
