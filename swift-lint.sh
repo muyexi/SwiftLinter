@@ -7,7 +7,16 @@ GIT_ROOT=$(git rev-parse --show-toplevel)
 #if $SWIFT_LINT >/dev/null 2>&1; then
 if [[ -e "${SWIFT_LINT}" ]]; then
     count=0
-    for file_path in $(git ls-files -m --full-name --exclude-from=.gitignore | grep ".swift$"); do
+
+    if [ -e "$GIT_ROOT/.gitignore" ]; then
+        echo ".gitignore exists."
+        FILE_PATHS=$(git ls-files -m --full-name --exclude-from=.gitignore | grep ".swift$")
+    else 
+        echo ".gitignore does not exist."
+        FILE_PATHS=$(git ls-files -m --full-name | grep ".swift$")
+    fi
+
+    for file_path in $FILE_PATHS; do
         export SCRIPT_INPUT_FILE_$count="$GIT_ROOT/$file_path"
         count=$((count + 1))
     done
