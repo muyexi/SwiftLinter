@@ -22,7 +22,7 @@ if [[ -e "${SWIFT_LINT}" ]]; then
     done
 
 ##### Check for modified files in unstaged/Staged area #####
-    for file_path in $(git diff --name-only --cached --full-name | grep ".swift$"); do
+    for file_path in $(git diff --name-only --cached | grep ".swift$"); do
         export SCRIPT_INPUT_FILE_$count="$GIT_ROOT/$file_path"
         count=$((count + 1))
     done
