@@ -7,5 +7,5 @@ Pod::Spec.new do |s|
   s.homepage       = 'https://github.com/muyexi/SwiftLinter'
   s.author         = { 'muyexi' => 'muyexi@gmail.com' }
   s.source         = { :git => 'https://github.com/muyexi/SwiftLinter.git', :tag => s.version }
-  s.preserve_paths = ["swiftlint.yml", "swift-lint.sh", "localPods.rb"]
+  s.preserve_paths = ["swiftlint.yml", "swift-lint.sh", "localPods.rb", "sourceFiles.rb"]
 end

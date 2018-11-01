@@ -19,6 +19,8 @@ fi
 
 echo -e "$(ruby -v)\n"
 
+declare -a SOURCE_FILES="($(ruby "$CURRENT_DIR/sourceFiles.rb"))"
+
 lintDirectory() {
     cd $1
     count=0
@@ -40,19 +42,26 @@ lintDirectory() {
         FILE_PATHS=(${FILE_PATHS[@]//*$i*})
     done
 
-    for file_path in $FILE_PATHS; do
-        export SCRIPT_INPUT_FILE_$count="$1/$file_path"
-        count=$((count + 1))
-
-        echo "Found lintable file: $1/$file_path"
-    done
-
 ##### Check for modified files in unstaged/Staged area #####
     for file_path in $(git diff --name-only --cached --diff-filter=AM | grep ".swift$"); do
+        FILE_PATHS=("${FILE_PATHS[@]}" $file_path)
+    done
+
+    # Remove files not in Podspec
+    if [[ $(pwd) != $GIT_ROOT ]]; then
+        for i in "${FILE_PATHS[@]}"; do
+            if [[ ! " ${SOURCE_FILES[@]} " =~ " $1/$i " ]]; then
+                echo "Remove: $1/$i"
+                FILE_PATHS=(${FILE_PATHS[@]//*$i*})
+            fi
+        done
+    fi
+
+    for file_path in "${FILE_PATHS[@]}"; do
         export SCRIPT_INPUT_FILE_$count="$1/$file_path"
         count=$((count + 1))
         echo "Found lintable file: $1/$file_path"
-    done
+    done    
 
 ##### Make the count avilable as global variable #####
     export SCRIPT_INPUT_FILE_COUNT=$count
@@ -68,7 +77,7 @@ lintDirectory() {
 
     CONFIG_PATH="$CURRENT_DIR/swiftlint.yml"
 
-    if [ $ARGUMENT1 == "autocorrect" ]; then
+    if [ "$ARGUMENT1" == "autocorrect" ]; then
         echo "autocorrect enabled!"
         $SWIFT_LINT autocorrect --use-script-input-files --config $CONFIG_PATH  #autocorrects before commit.
     fi
@@ -89,7 +98,7 @@ lintDirectory() {
 lintDirectory $GIT_ROOT
 
 declare -a POD_DIRS="($(ruby "$CURRENT_DIR/localPods.rb"))"
-echo "Local pods: "
+echo "Lintable pods: "
 printf '%s\n' "${POD_DIRS[@]}"
 
 for i in "${POD_DIRS[@]}"
