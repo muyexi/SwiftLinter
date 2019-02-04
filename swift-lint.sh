@@ -4,7 +4,10 @@
 SWIFT_LINT=/usr/local/bin/swiftlint
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 GIT_ROOT=$(git rev-parse --show-toplevel)
+
 ARGUMENT1=$1
+ARGUMENT2=$2
+ARGUMENT3=$3
 
 if ! [[ -e "${SWIFT_LINT}" ]]; then
 #### If SwiftLint is not installed, do not allow commit
@@ -76,6 +79,11 @@ lintDirectory() {
     fi
 
     CONFIG_PATH="$CURRENT_DIR/swiftlint.yml"
+
+    if [ "$ARGUMENT2" == "--config" ] && [ -e "$ARGUMENT3" ]; then
+        echo "📂 Found custom config file: $ARGUMENT3"
+        CONFIG_PATH="$ARGUMENT3"
+    fi
 
     if [ "$ARGUMENT1" == "autocorrect" ]; then
         echo "autocorrect enabled!"
